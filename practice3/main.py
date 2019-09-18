@@ -1,45 +1,45 @@
-import csv
 import numpy as np
-import matplotlib.pyplot as pl
+import matplotlib.pyplot as plt
+import pandas
 from mpl_toolkits.mplot3d import Axes3D
 
-def readRawData():
-    data = []
-
-    with open('train_data.csv', 'r') as csvFile:
-        reader = csv.reader(csvFile)
-        for row in reader:
-            data.append(row)
-
-    csvFile.close()
-    return data
-
-def convertData(rawData):
-    rawData.pop(0)
-    for i in range(len(rawData)):
-        for j in range(len(rawData[0])):
-            rawData[i][j] = float(rawData[i][j])
-
-    return np.transpose(rawData)
-
-def normalize(arr):
-    minVal = np.amin(arr)
-    maxVal = np.amax(arr)
-    for i in range(len(arr)):
-        arr[i] = (arr[i] - minVal) / (maxVal - minVal)
-
-    return arr
+dataRaw = pandas.read_csv('train_data.csv')
+dataRaw = dataRaw.to_numpy()
+Y = [dataRaw[i][4] for i in range(len(dataRaw))]
+X = np.delete(dataRaw, 4, 1)
 
 
-rawData = readRawData()
-convertedData = convertData(rawData)
+thetas = np.zeros(len(dataRaw[0]))
+alpha = 0.01
+epochs = 1800
 
-X = np.array([convertedData[0], convertedData[1], convertedData[2], convertedData[3]])
-Y = np.array(convertedData[4])
+Y = [(i-np.mean(Y))/(np.max(Y)-np.min(Y)) for i in Y]
+X = np.array([[(X[i][j]-np.mean(X[:, j]))/(np.max(X[:, j])-np.min(X[:, j])) for j in range(len(X[i]))] for i in range(len(X))])
+X = np.array([np.insert(i, 0, 1) for i in X])
 
-for i in range(4):
-    X[i] = normalize(X[i])
+def cost(x, y, thetas):
+    h = x.dot(thetas)
+    return np.sum(np.square(h - y)) / (2 * len(x))
 
-Y = normalize(Y)
+costs = []
+dataLength = len(X)
 
-print(X)
+for i in range(epochs):
+    next_thetas = np.zeros(5).astype(float)
+    for j in range(5):
+        next_thetas[j] = thetas[j] - (alpha / dataLength) * \
+        np.sum((X.dot(thetas) - Y) * np.array(X[:, j]))
+    thetas = next_thetas
+
+    costs.append(cost(X, Y, thetas))
+
+print(costs)
+
+Xrange = range(epochs)
+
+plt.plot(Xrange, costs)
+
+plt.ylabel('Cost')
+plt.xlabel('Epochs')
+
+plt.show()
