@@ -42,4 +42,6 @@ plt.plot(Xrange, costs)
 plt.ylabel('Cost')
 plt.xlabel('Epochs')
 
+print(X)
+
 plt.show()
