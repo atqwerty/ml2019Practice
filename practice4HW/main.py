@@ -28,36 +28,33 @@ Y = np.asarray(Y, dtype=np.float)
 X = np.delete(data, 3, axis=1)
 X = np.asarray(X, dtype=np.float)
 
+# Y = [(i-np.mean(Y))/(np.max(Y)-np.min(Y)) for i in Y]
+X = np.array([[(X[i][j]-np.mean(X[:, j]))/(np.max(X[:, j])-np.min(X[:, j])) for j in range(len(X[i]))] for i in range(len(X))])
 
-# dataRaw = np.loadtxt(fname="ex2data1.txt", delimiter=",", usecols=[0, 1, 2])
-# Y = [dataRaw[i][2] for i in range(len(dataRaw))]
-# Y = np.asarray(Y, dtype=np.float)
-# X = np.delete(dataRaw, 2, 1)
-# # X = X.transpose()
+thetas = np.zeros(4, dtype=np.float32)
+ 
+ax = pl.figure().gca(projection="3d")
+ax.scatter(X[0], X[1], X[2], Y)
+pl.show()
 
-# thetas = np.zeros(3, dtype=np.float32)
+X = np.array([np.insert(i, 0, 1) for i in X])
 
-# ax = pl.figure().gca(projection="3d")
+print(X.shape)
+print(thetas.shape)
 
-# # ax.scatter(X[0], X[1], Y)
+alpha = 0.01
+epochs = 1500
 
-# # X = X.transpose()
-# X = np.array([np.insert(i, 0, 1) for i in X])
+for i in range(epochs):
+    next_thetas = np.zeros(4).astype(float)
+    for j in range(3):
+        next_thetas[j] = thetas[j] - (alpha / len(X)) * np.sum((hypothesis(X, thetas) - Y) * np.array(X[:, j]))
+    thetas = next_thetas
 
-# alpha = 0.01
-# epochs = 1500
-
-# for i in range(epochs):
-#     next_thetas = np.zeros(3).astype(float)
-#     for j in range(3):
-#         next_thetas[j] = thetas[j] - (alpha / len(X)) * np.sum((hypothesis(X, thetas) - Y) * np.array(X[:, j]))
-#     thetas = next_thetas
-
-# print(thetas)
+print(thetas)
 # print('-----')
 # # print(hypothesis(X, thetas))
-# propbs = np.dot(X, thetas)
-# print(np.sum(propbs) / len(propbs))
+print(np.dot(X, thetas))
 
 # # point = np.array([0.0, 0.0, thetas[0]])
 # # normal = np.array(cross([1, 0, thetas[2]], [0, 1, thetas[1]]))
