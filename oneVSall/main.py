@@ -34,7 +34,9 @@ epochs = 1500
 answer = []
 
 for i in np.unique(Y):
-    y_copy = np.where(Y == i, 1, 0)
+    y_copy = []
+    for j in range(len(Y)):
+        y_copy.append(1 if Y[j] == i else 0)
 
     for _ in range(epochs):
         output = X.dot(thetas)
@@ -42,12 +44,12 @@ for i in np.unique(Y):
         errors = sigmoid(output) - y_copy
         thetas -= (alpha / len(X)) * errors.dot(X)
     answer.append((thetas, i))
-# print(answer)
+print(answer)
 
 train_x = X[:10]
 
-for i in range(6):
-    print(answer[i][0])
+# for i in range(6):
+    # print(answer[i][0])
 
 # for i in range(train_x.shape[0]):
     # for j in range(6):
