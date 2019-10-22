@@ -39,11 +39,11 @@ for i in np.unique(Y):
     for j in range(len(Y)):
         y_copy.append(1 if Y[j] == i else 0)
 
-    for j in range(len(X)):
+    for j in range(epochs):
         output = X.dot(thetas[counter])
 
         errors = sigmoid(output) - y_copy
-        thetas[counter] -= (alpha / len(X)) * errors.dot(X)
+        thetas[counter] -= errors.dot(X) / len(X)
     answer.append((thetas[counter], i))
     counter += 1
 
@@ -53,7 +53,7 @@ train_x = X[:10]
 
 for i in range(train_x.shape[0]):
     for j in range(6):
-        print(sigmoid(np.dot(train_x[i], answer[j][0])))
+        print(str(sigmoid(np.dot(train_x[i], answer[j][0]))) + " " + str(answer[j][1]))
         print('-----')
     print('---------------------------------------')
 
