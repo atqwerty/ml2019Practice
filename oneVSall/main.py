@@ -25,9 +25,8 @@ x = X
 
 X = np.array([[(X[i][j]-np.mean(X[:, j]))/(np.max(X[:, j])-np.min(X[:, j])) for j in range(len(X[i]))] for i in range(len(X))])
 
-# X = np.insert(X, 0, 1, axis=1)
+X = np.insert(X, 0, 1, axis=1)
 thetas = np.random.rand(6, X.shape[1])
-print(np.unique(Y))
 
 alpha = 0.01
 epochs = 1500
@@ -36,7 +35,6 @@ answer = []
 counter = 0
 
 for i in np.unique(Y):
-    # thetas = np.random.rand(6, X.shape[1])
     y_copy = []
     for j in range(len(Y)):
         y_copy.append(1 if Y[j] == i else 0)
@@ -46,20 +44,17 @@ for i in np.unique(Y):
 
         errors = sigmoid(output) - y_copy
         thetas[counter] -= (alpha / len(X)) * errors.dot(X)
-    # print(thetas[counter])
     answer.append((thetas[counter], i))
     counter += 1
 
-# print(X.shape)
+train_x = X[:10]
 
-print(answer)
+# print(np.dot(X, answer[:]))
 
-# train_x = X[:10]
+for i in range(train_x.shape[0]):
+    for j in range(6):
+        print(sigmoid(np.dot(train_x[i], answer[j][0])))
+        print('-----')
+    print('---------------------------------------')
 
-# for i in range(train_x.shape[0]):
-#     for j in range(6):
-#         print(np.sum(sigmoid(np.dot(train_x[i], answer[j][0].T))) / len(sigmoid(np.dot(train_x[i], answer[j][0].T))))
-#         print('-----')
-#     print('---------------------------------------')
-
-# print(x[-1])
+print(x[-1])
