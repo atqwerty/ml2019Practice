@@ -44,7 +44,3 @@ class NeuralNetwork:
             loss = np.sum(-self.one_hot_encoding * np.log(softmax_hypothesis))
             print('Loss function value: ', loss)
             self.error_cost.append(loss)
-
-        x = range(len(self.error_cost))
-        plt.plot(x, self.error_cost)
-        plt.show()

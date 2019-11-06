@@ -34,3 +34,7 @@ result = np.argmax(res, axis = 1)
 result += 1
 print(result)
 print(np.mean(result == labels) * 100)
+
+x = range(len(model.error_cost))
+plt.plot(x, model.error_cost)
+plt.show()
