@@ -1,6 +1,6 @@
 import numpy as np
 
-class NeuralNetwork2:
+class NeuralNetwork:
     def init(self, X, one_hot_labels, epochs):
         # np.random.seed(42)
         self.X = X
@@ -13,7 +13,7 @@ class NeuralNetwork2:
         self.bias_hidden = np.random.randn(self.hidden_nodes)
         self.output_weights = np.random.rand(self.hidden_nodes, self.output_labels)
         self.bias_output = np.random.randn(self.output_labels)
-        self.learning_rate = 0.01
+        self.learning_rate = 0.001
         self.error_cost = []
         self.epochs = epochs
         # print(self.hidden_weights)
@@ -71,4 +71,4 @@ class NeuralNetwork2:
             #     print('Loss function value: ', loss)
             #     self.error_cost.append(loss)
 
-            print(normalized_probability_distribution)
+        print(normalized_probability_distribution)
