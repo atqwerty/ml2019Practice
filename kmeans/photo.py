@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as pl
 
 
-def init_centroids(X, K):
-    randidx = np.random.permutation(len(X))
-    centroids = X[randidx[0:K]]
+def init_centroids(X, k):
+    random_centroid_position = np.random.permutation(len(X))
+    centroids = X[random_centroid_position[0:k]]
     return centroids
 
 
@@ -21,11 +21,10 @@ def minimize_centroid(X, centroids):
     return np.array(min_centroid)
 
 
-def kmeans(X, min_centroid, K):
-    m, n = X.shape
-    centroids = np.zeros((K, n))
-    for k in range(K):
-        centroids[k] = np.mean(X[min_centroid.ravel() == k], axis=0)
+def kmeans(X, min_centroid, k):
+    centroids = np.zeros((k, X.shape[1]))
+    for i in range(k):
+        centroids[i] = np.mean(X[min_centroid.ravel() == i], axis=0)
     return centroids
 
 
