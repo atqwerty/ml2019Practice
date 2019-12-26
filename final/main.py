@@ -3,6 +3,7 @@ import pandas as pd
 import datetime
 import matplotlib.pyplot as plt
 import cv2
+import graphviz
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
@@ -199,19 +200,18 @@ y_train = scaler_y.fit_transform(y_train)
 y_val = scaler_y.fit_transform(y_val)
 y_test = scaler_y.fit_transform(y_test)
 
-print(y_train)
 
-model1 = tree.DecisionTreeRegressor(max_depth=4)
-model2 = tree.DecisionTreeRegressor(max_depth=5)
-model3 = tree.DecisionTreeRegressor(max_depth=6)
-model4 = tree.DecisionTreeRegressor(max_depth=20, splitter="random")
+# Model 1
+model = tree.DecisionTreeRegressor(max_depth=10, splitter="random")
 
-model4 = model4.fit(x_train, y_train)
-prediction = model4.predict(x_test)
+model = model.fit(x_train, y_train)
+prediction = model.predict(x_test)
 
-# print(prediction)
-# print(x_test)
-# print(y_test)
+print(prediction)
+print("-----")
+print(x_test)
+print("-----")
+print(y_test)
 
 prediction = scaler_y.inverse_transform(prediction)
 answers = scaler_y.inverse_transform(y_test)
@@ -222,3 +222,6 @@ plt.scatter(prediction.T[1], prediction.T[0], label='Dense Prediction')
 plt.title("Coordinates Prediction")
 plt.legend()
 plt.show()
+
+dot_data = tree.export_graphviz(model, out_file='tree.dot')
+print(dot_data)
